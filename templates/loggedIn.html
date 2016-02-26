@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+	<head>
+		<meta charset="UTF-8">
+		<title>rapid reader - read different</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="{% static "my_app/jquery.min.js"%}"></script>
+		<script src="{% static "my_app/skel.min.js"%}"></script>
+		<script src="{% static "my_app/skel-layers.min.js"%}"></script>
+		<script src="{% static "my_app/init.js"%}"></script>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        {% comment %}<link rel="stylesheet" href="{% static "my_app/skel.css"%}" />{% endcomment %}
+		<link rel="stylesheet" href="{% static 'my_app/style.css' %}" />
+        <link rel="stylesheet" href="{% static "my_app/style-xlarge.css"%}" />
+	</head>
+    <!-- Header -->
+        <header id="header">
+            <h1><a href="/">rapid reader</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li><a href="login" style="color: #000000" ><font color="white">Not {{ user }}?</font></a></li>
+                    <li><a href="/" class="button special">Home</a></li>
+                </ul>
+            </nav>
+        </header>
+<body>
+
+<header class="major">
+						<h2>Search for an article</h2>
+					</header>
+            <div class="12u 12u$(medium)">
+                <section class="box">
+                    <i class="icon big rounded color9 fa-search"></i>
+                        <h3>Search for articles from <a href="http://www.nytimes.com" style="color: #3c61d4">The New York Times</a> and <a href="http://www.theguardian.com" style="color: #3c61d4">The Guardian</a>.</h3>
+                            <form name="source_selection_form" action="resultsPage" method = "GET" style="padding-right: 20px">
+                                    <select style="width: 20%;float: left" name="Article_Search">
+                                        {% for source in source_list %}
+										<option name = "source_submitted" value={{ source }}> {{ source }} </option>
+                                        {% endfor %}
+                                    </select>
+                                    <input style="width: 78%;float: right" value="Type search terms here" type="text" name="text_field" placeholder="Type search terms here">
+                                </form>
+                            <div style='clear:both'></div>
+                        </section>
+                    </div>
+            <!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>&copy; rapid reader. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+							</ul>
+						</div>
+                        <div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a href="http://gsb.columbia.edu" class="icon rounded fa-graduation-cap"><span class="label">Columbia Business School</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+</body>
+</html>

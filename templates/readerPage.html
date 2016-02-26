@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+	<head>
+		<meta charset="UTF-8">
+		<title>rapid reader - read different</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="{% static "my_app/jquery.min.js"%}"></script>
+		<script src="{% static "my_app/skel.min.js"%}"></script>
+		<script src="{% static "my_app/skel-layers.min.js"%}"></script>
+		{% comment %}<script src="{% static "my_app/init.js"%}"></script>{% endcomment %}
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        {% comment %}<link rel="stylesheet" href="{% static "my_app/skel.css"%}" />{% endcomment %}
+		<link rel="stylesheet" href="{% static 'my_app/style.css' %}" />
+        <link rel="stylesheet" href="{% static "my_app/style-xlarge.css"%}" />
+	</head>
+	<body>
+
+
+<!-- Header -->
+			<header id="header">
+				<h1><a href="/">rapid reader</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="/" class="button special">Home</a></li>
+					</ul>
+				</nav>
+            </header>
+
+		<!-- One -->
+			<section id="one" class="wrapper style1 special"></section>
+						</div>
+					</div>
+					<div class="row 150%">
+                        <div class="12u 12u$(medium)">
+							<section class="box">
+								<i class="icon big rounded color1 fa-book"></i>
+                            <p align="left"> {{ text }} </p>
+                            </section>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>&copy; rapid reader. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+							</ul>
+						</div>
+                        <div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a href="http://gsb.columbia.edu" class="icon rounded fa-graduation-cap"><span class="label">Columbia Business School</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+	</body>
+<script type="text/javascript">
+if(typeof EasyReadBox=="undefined") {
+    var EasyReadBox = EasyReadBox || document.createElement("div");
+    var EasyReadBoxModeOn = true;
+    var TheText = "{{ text }}";
+    var SpeedLoop;
+    var EasyReadBoxWidth = 500;
+    var Period = false;
+    var Counter = 1;
+    var Fraction;
+
+
+    EasyReadBox.setAttribute("style", "position: absolute; z-index:9999; top: 150px; left: " + (fullWidth() - EasyReadBoxWidth) / 2 + "px; width: " + EasyReadBoxWidth + "px; height: 110px; background: black; padding: 5px");
+    EasyReadBox.setAttribute("id", "EasyReadBoxWrapper");
+    EasyReadBox.innerHTML = "<div id=\"EasyReadBox\" style=\"background: white; width: " + EasyReadBoxWidth + "px; height: 90px; position: relative;\">";
+    EasyReadBox.innerHTML += "<style type=\"text/css\">.ERBW_invis{ display: none;} #EasyReadBoxText div{ font-size: 35pt; float: left; height: 1px;} #EasyReadBoxWordCenter{color: red;}</style>";
+    EasyReadBox.innerHTML += "<div style=\"width: 2px; background: black; height: 90px; position: absolute; top: 5px; left: " + (EasyReadBoxWidth / 2 + 7) + "px;\"></div>";
+    EasyReadBox.innerHTML += "<div id=\"EasyReadBoxText\" style=\" background: white; height: 60px; width: " + EasyReadBoxWidth + "px; position: absolute; top: 22px; left: 5px; \"></div>";
+    EasyReadBox.innerHTML += "</div>";
+    EasyReadBox.innerHTML += "<div style=\"color: white; padding: 0px 0px 0px 5px;\">Press  R  to begin reading and  E  to pause/continue</div>";
+    EasyReadBox.innerHTML += "<div><input type=\"text\" id=\"SpeedSetter\" value=\"500\" style=\"border: 0px; padding: 0px 4px; text-align: right; width: 40px; position: absolute; bottom: 20px; right: 5px;\" /></div>";
+
+    document.body.appendChild(EasyReadBox);
+
+    window.onkeyup = function (e) {
+        var key = e.keyCode ? e.keyCode : e.which;
+        if (key == 27) { //esc
+            var MyClass = document.getElementById("EasyReadBoxWrapper").getAttribute("class");
+            if (MyClass == "ERBW_invis") {
+                document.getElementById("EasyReadBoxWrapper").setAttribute("class", "");
+            } else {
+                document.getElementById("EasyReadBoxWrapper").setAttribute("class", "ERBW_invis");
+            }
+        }
+        if (key == 82) { //r
+            EasyReadBoxModeOn = true;
+            clearTimeout(SpeedLoop);
+            SpeedThatText();
+            var Speed = (1000 * 60) / document.getElementById("SpeedSetter").value
+        }
+        if (key == 69) { //e
+            EasyReadBoxModeOn = !EasyReadBoxModeOn;
+        }
+    }
+
+    var SpeedLoopRoutine = function () {
+        var l = "";//This will represent the last character of the current word.
+        if (TheText.length == 0) {
+            DisplayWord("");
+        } else if (EasyReadBoxModeOn) {
+            if (Period) {
+                Period = false;
+            } else {
+                l = TheText[0].substr(TheText[0].length - 1);
+                if (l == "." || l == "?" || l == "!") {
+                    Period = true;
+                }
+                DisplayWord(TheText[0]);
+                TheText.shift()
+            }
+        }
+        var Speed = (1000 * 60) / document.getElementById("SpeedSetter").value;
+        SpeedLoop = setTimeout(SpeedLoopRoutine, Speed);
+    }
+
+    function SpeedThatText() {
+        var Speed = (1000 * 60) / document.getElementById("SpeedSetter").value;
+        TheText = TheText.split(" ");
+        SpeedLoop = setTimeout(SpeedLoopRoutine, Speed);
+    }
+
+    function DisplayWord(word) {
+        var OutHTML;
+        var redLetter = 1;
+        switch (word.length) {
+            case 1:
+                redLetter = 0; // first
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                redLetter = 1; // second
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                redLetter = 2; // third
+                break;
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+                redLetter = 3; // fourth
+                break;
+            default:
+                redLetter = 4; // fifth
+        }
+
+        OutHTML = "<div id=\"EasyReadBoxWordSpacer\"></div>";
+        OutHTML += "<div id=\"EasyReadBoxWordLeft\">";
+        OutHTML += word.substring(0, redLetter);
+        OutHTML += "</div>";
+        OutHTML += "<div id=\"EasyReadBoxWordCenter\">";
+        OutHTML += word.substring(redLetter, redLetter + 1);
+        OutHTML += "</div>";
+        OutHTML += "<div id=\"EasyReadBoxWordRight\">";
+        OutHTML += word.substring(redLetter + 1, word.length);
+        OutHTML += "</div>";
+
+        document.getElementById("EasyReadBoxText").innerHTML = OutHTML;
+        var L, C;
+        L = document.getElementById("EasyReadBoxWordLeft").offsetWidth;
+        C = document.getElementById("EasyReadBoxWordCenter").offsetWidth;
+        document.getElementById("EasyReadBoxWordSpacer").setAttribute("style", "width: " + (Math.floor((EasyReadBoxWidth - C) / 2) - L + 2) + "px");
+    }
+
+    function fullWidth() {
+        var w = 0;
+        if (!window.innerWidth) {
+            if (!(document.documentElement.clientWidth == 0)) {
+                w = document.documentElement.clientWidth;
+            } else {
+                w = document.body.clientWidth;
+            }
+        } else {
+            w = window.innerWidth;
+        }
+        return w;
+    }
+
+    function removeHTMLTags(h) {
+        var d = document.createElement("div");
+        d.innerHTML = h;
+        return d.innerText;
+    }
+}
+</script>
+</html>
